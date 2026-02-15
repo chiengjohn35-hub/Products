@@ -70,4 +70,5 @@ const ProductCard = ({ product, onAdd, isAdded }) => {
   );
 };
 
+
 export default ProductCard;
