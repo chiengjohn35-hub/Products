@@ -2,7 +2,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, ShoppingCart, Plus, Minus, Trash2 } from 'lucide-react';
 import { cartApi } from '../services/api';
 
-const API_BASE_URL = 'http://localhost:8000';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 
 const CartDrawer = ({ isOpen, onClose, cart = [], onUpdate }) => {
   const safeCart = Array.isArray(cart) ? cart : [];
@@ -67,8 +68,10 @@ const CartDrawer = ({ isOpen, onClose, cart = [], onUpdate }) => {
                       <img 
                         src={`${API_BASE_URL}${item.product.image_url}`} 
                         alt={item.product.name}
-                        className="w-full h-full object-cover" 
+                        className="w-full h-full object-cover object-center"
+                        loading="lazy"
                       />
+
                     </div>
 
                     <div className="flex flex-col justify-between flex-1 min-w-0">
