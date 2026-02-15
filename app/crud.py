@@ -3,7 +3,6 @@ from fastapi import HTTPException
 from . import model , schemas
 
 def add_product(product: schemas.ProductCreate, db: Session):
-    # Use the model.Product class, not the pydantic schema, to create the DB entry
     db_product = model.Product(
         name=product.name,
         price=product.price,
@@ -13,7 +12,7 @@ def add_product(product: schemas.ProductCreate, db: Session):
 
     db.add(db_product)
     db.commit()
-    db.refresh(db_product)  # Refreshes to get the DB-generated ID
+    db.refresh(db_product)  
     return db_product
 
 def list_product(db: Session, skip: int = 0, limit: int = 100):
@@ -22,12 +21,12 @@ def list_product(db: Session, skip: int = 0, limit: int = 100):
 
 
 def add_to_cart(db: Session, cart_id: int, item: schemas.CartItemCreate):
-    # 1. Verify the product exists
+    # 1. check if  the product exists
     db_product = db.query(model.Product).filter(model.Product.id == item.product_id).first()
     if not db_product:
         raise HTTPException(status_code=404, detail="Product not found")
 
-    # 2. Check if the cart exists, create if it doesn't (since we have no Users)
+    # 2. Check if the cart exists or create new cart
     db_cart = db.query(model.Cart).filter(model.Cart.id == cart_id).first()
     if not db_cart:
         db_cart = model.Cart()
@@ -54,7 +53,6 @@ def add_to_cart(db: Session, cart_id: int, item: schemas.CartItemCreate):
         db.add(new_item)
 
     db.commit()
-    # Refresh to return the full cart state
     db.refresh(db_cart)
     return db_cart
 

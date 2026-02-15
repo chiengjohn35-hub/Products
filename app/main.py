@@ -9,7 +9,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from . import model 
 from .database import engine
 
-# This creates the tables in your .db file if they don't exist
+# creates the tables in your .db file if they don't exist
 model.Base.metadata.create_all(bind=engine)
 
 
