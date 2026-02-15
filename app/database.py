@@ -1,0 +1,21 @@
+from sqlalchemy import engine, create_engine
+from sqlalchemy.orm import declarative_base, Session, sessionmaker
+
+
+
+SQLALCHEMY_DATABASE_URL = 'sqlite:///./product10.db'
+
+engine = create_engine(SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False})
+
+SessionLocal = sessionmaker(autoflush=False, autocommit=False, bind=engine)
+
+Base = declarative_base()
+
+def get_db():
+    db=  SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
+
