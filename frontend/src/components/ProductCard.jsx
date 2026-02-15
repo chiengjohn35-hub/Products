@@ -26,7 +26,8 @@ const ProductCard = ({ product, onAdd, isAdded }) => {
       <div className="aspect-[4/3] rounded-2xl overflow-hidden mb-4 bg-neutral-100">
         <img 
           // Prepend base URL to the database path
-          src={`${API_BASE_URL}${product.image_url}`} 
+// Change this line in your ProductCard.jsx
+          src={`${API_BASE_URL}/static/uploads/${product.image_url}`}
           alt={product.name}
           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
           // Fallback with fixed URL or standard placeholder
