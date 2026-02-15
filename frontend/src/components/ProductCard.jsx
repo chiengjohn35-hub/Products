@@ -30,7 +30,12 @@ const ProductCard = ({ product, onAdd, isAdded }) => {
           alt={product.name}
           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
           // Fallback with fixed URL or standard placeholder
-          onError={(e) => { e.target.src = 'https://placehold.co'; }}
+          onError={(e) => {
+          if (!e.target.dataset.fallback) {
+            e.target.dataset.fallback = "true";
+            e.target.src = "https://placehold.co/600x400";
+          }
+        }}
         />
       </div>
       <div className="px-2">
