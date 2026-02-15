@@ -18,8 +18,17 @@ import os, uuid
 
 router = APIRouter(prefix="/products", tags=["Products"])
 
-UPLOAD_DIR = "static/uploads"
+
+
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))  # app/routers/
+APP_DIR = os.path.dirname(BASE_DIR)                    # app/
+STATIC_DIR = os.path.join(APP_DIR, "static")
+UPLOAD_DIR = os.path.join(STATIC_DIR, "uploads")
+
 os.makedirs(UPLOAD_DIR, exist_ok=True)
+
+
 
 @router.post("/upload", response_model=schemas.Product)
 async def create_product_with_image(
@@ -30,11 +39,13 @@ async def create_product_with_image(
 ):
     ext = image.filename.split(".")[-1]
     filename = f"{uuid.uuid4()}.{ext}"
-    filepath = os.path.join(UPLOAD_DIR, filename)
+    file_path = os.path.join(UPLOAD_DIR, filename)
 
-    with open(filepath, "wb") as f:
+    # Save file correctly
+    with open(file_path, "wb") as f:
         f.write(await image.read())
 
+    # Correct URL for frontend
     image_url = f"/static/uploads/{filename}"
 
     product = Product(name=name, price=price, image_url=image_url)
@@ -43,6 +54,7 @@ async def create_product_with_image(
     db.refresh(product)
 
     return product
+
 
 
 @router.post("/", response_model=schemas.Product)

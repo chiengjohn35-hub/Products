@@ -20,16 +20,19 @@ app = FastAPI(
 )
 
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+STATIC_DIR = os.path.join(BASE_DIR, "static")
+UPLOAD_DIR = os.path.join(STATIC_DIR, "uploads")
+
+os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 
 
-# Create the directory if it doesn't exist to prevent errors on startup
-if not os.path.exists("static"):
-    os.makedirs("static")
 
 # Mount the static directory
 # This makes files in /static accessible at http://localhost:8000/static
-app.mount("/static", StaticFiles(directory="static"), name="static")
+app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
+
 
 app.include_router(product.router)
 app.include_router(cart.router)
